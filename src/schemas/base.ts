@@ -103,9 +103,21 @@ export const baseSchema = z.object({
 		),
 	changelog: z
 		.object({
-			products: z.array(reference("products")).optional(),
-			date: z.coerce.date().optional(),
+			date: z.coerce
+				.date()
+				.describe(
+					"An ISO-8601 date to indicate when this page should be published in RSS feeds.",
+				),
+			scheduled: z.coerce
+				.date()
+				.optional()
+				.describe(
+					"An ISO-8601 date to indicate this page is a future-dated entry in the RSS feed title. The publish date is still taken from the `date` field.",
+				),
 		})
 		.strict()
-		.optional(),
+		.optional()
+		.describe(
+			"Used for pages in the 'docs' collection that should be used as changelog entries.",
+		),
 });

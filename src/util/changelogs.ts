@@ -13,9 +13,32 @@ import rehypeRemark from "rehype-remark";
 import remarkGfm from "remark-gfm";
 import remarkStringify from "remark-stringify";
 
+function toISODate(date: Date) {
+	return date.toISOString().slice(0, 10);
+}
+
 type DocsToChangelogOptions = {
-	name: string;
+	/**
+	 * An optional title to be prefixed before the date.
+	 * This is only necessary if you require an extra product name.
+	 *
+	 * @example
+	 * `HTTP DDoS managed ruleset`
+	 */
+	name?: string;
+	/**
+	 * Name of a product which must match a filename in the
+	 * src/content/products/ collection, without the
+	 * file extension.
+	 *
+	 * @example
+	 * `ddos-protection`
+	 */
 	product: string;
+	/**
+	 * A changelog entry from the `getChangelogs({})` function.
+	 * @see {@link getChangelogs}
+	 */
 	entry: CollectionEntry<"docs">;
 };
 
@@ -25,23 +48,31 @@ function docsToChangelog({
 	entry,
 }: DocsToChangelogOptions): CollectionEntry<"changelogs-next"> {
 	const { data } = entry;
-	const { title, changelog } = data;
 
-	let date;
-	if (changelog?.date) {
-		date = changelog.date;
+	// `data.changelog` will exist as the existence of this
+	// property is part of the `getChangelogs` filter.
+	const date = data.changelog!.date;
+	const scheduled = data.changelog!.scheduled;
+
+	const iso8601 = toISODate(date);
+
+	let title;
+	if (scheduled) {
+		title = `Scheduled for ${toISODate(scheduled)}`;
 	} else {
-		date = new Date(data.title.split(" ")[0]);
+		title = iso8601;
 	}
 
-	const iso8601 = date.toISOString().slice(0, 10);
+	if (name) {
+		title = `${name} - ${title}`;
+	}
 
 	return {
 		...entry,
 		collection: "changelogs-next",
 		data: {
 			title,
-			description: `${name} - ${iso8601}`,
+			description: `${name} - ${toISODate(date)}`,
 			date,
 			products: [{ collection: "products", id: product }],
 			link: `/${entry.id}/`,
@@ -66,8 +97,7 @@ export async function getChangelogs({
 
 	const ddosHttp = await getCollection("docs", (e) => {
 		return (
-			e.id.startsWith("ddos-protection/change-log/http/") &&
-			e.data.pcx_content_type === "changelog"
+			e.id.startsWith("ddos-protection/change-log/http/") && e.data.changelog
 		);
 	});
 
@@ -83,8 +113,7 @@ export async function getChangelogs({
 
 	const ddosNetwork = await getCollection("docs", (e) => {
 		return (
-			e.id.startsWith("ddos-protection/change-log/network/") &&
-			e.data.pcx_content_type === "changelog"
+			e.id.startsWith("ddos-protection/change-log/network/") && e.data.changelog
 		);
 	});
 
@@ -99,16 +128,12 @@ export async function getChangelogs({
 		.forEach((e) => entries.push(e));
 
 	const waf = await getCollection("docs", (e) => {
-		return (
-			e.id.startsWith("waf/change-log/") &&
-			e.data.pcx_content_type === "changelog"
-		);
+		return e.id.startsWith("waf/change-log/") && e.data.changelog;
 	});
 
 	waf
 		.map((e) =>
 			docsToChangelog({
-				name: "WAF",
 				product: "waf",
 				entry: e,
 			}),
@@ -136,40 +161,50 @@ type GetRSSItemsOptions = {
 	locals: App.Locals;
 	/**
 	 * Returns Markdown in the `<content:encoded>` field instead of HTML.
-	 * Markdown will contain `\n` in the output, as fast-xml-parser outputs
-	 * single-line strings.
-	 *
-	 * @example
-	 * # heading\n\ntext\ntext
 	 */
 	markdown?: boolean;
+	/**
+	 * Creates items in the same way as historic changelogs. The behaviour of
+	 * this option should not be changed, all improvements should be made
+	 * to the normal RSS feeds.
+	 *
+	 * The differences between normal items and legacy items are:
+	 *
+	 * - HTML is not filtered by our `filter-elements` plugin.
+	 * - HTML is in the `description` element rather than `content:encoded`.
+	 * - Only the first product can be shown in the title and the custom `<product>` element.
+	 */
+	legacy?: boolean;
 };
 
 export async function getRSSItems({
 	notes,
 	locals,
 	markdown,
+	legacy,
 }: GetRSSItemsOptions): Promise<Array<RSSFeedItem>> {
 	return await Promise.all(
 		notes.map(async (note) => {
 			const { title, description, date, products, link } = note.data;
 
 			const productEntries = await getEntries(products);
-			const productTitles = productEntries.map((p) => p.data.name);
+			const productTitles = productEntries.map((p) => p.data.name as string);
 
 			const html = await entryToString(note, locals);
 
-			let plugins: PluggableList = [
-				rehypeParse,
-				rehypeBaseUrl,
-				rehypeFilterElements,
-			];
+			const plugins: PluggableList = [rehypeParse, rehypeBaseUrl];
+
+			if (!legacy) {
+				plugins.push(...[rehypeFilterElements]);
+			}
 
 			if (markdown) {
-				plugins = plugins.concat([rehypeRemark, remarkGfm, remarkStringify]);
+				plugins.push(...[rehypeRemark, remarkGfm, remarkStringify]);
 			} else {
-				plugins = plugins.concat([rehypeStringify]);
+				plugins.push(...[rehypeStringify]);
 			}
+
+			console.log(plugins);
 
 			const file = await unified()
 				.data("settings", {
@@ -179,6 +214,19 @@ export async function getRSSItems({
 				.process(html);
 
 			const content = String(file).trim();
+
+			if (legacy) {
+				// Only a single product title is supported in legacy items.
+				const productTitle = productTitles.at(0);
+
+				return {
+					title: `${productTitle} - ${title}`,
+					description: content,
+					pubDate: date,
+					link,
+					customData: `<product>${productTitle}</product>`,
+				};
+			}
 
 			return {
 				title: `${productTitles.join(", ")} - ${title}`,
