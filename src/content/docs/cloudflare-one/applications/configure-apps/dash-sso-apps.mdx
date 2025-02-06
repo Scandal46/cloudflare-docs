@@ -71,7 +71,7 @@ If there is an issue with your SSO IdP provider, you can add an alternate IdP us
 1. [Add](/api/resources/zero_trust/subresources/identity_providers/methods/create/) one-time PIN login:
 
 ```bash title="cURL command"
-curl 'https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/access/identity_providers' \
+curl "https://api.cloudflare.com/client/v4/accounts/$ACCOUNT_ID/access/identity_providers" \
 --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
 --header "Content-Type: application/json" \
 --data '{
