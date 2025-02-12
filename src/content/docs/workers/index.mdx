@@ -1,5 +1,5 @@
 ---
-title: Overview
+title: Workers Overview
 type: overview
 pcx_content_type: overview
 sidebar:
@@ -10,167 +10,78 @@ head:
 ---
 
 import {
-	CardGrid,
+	PackageManagers,
 	Description,
-	Feature,
 	LinkButton,
-	LinkTitleCard,
 	Plan,
-	RelatedProduct,
-	Render,
+	AstroIcon,
+	Tabs,
+	TabItem,
+	CardGrid,
+	LinkTitleCard,
 } from "~/components";
 
-<Description>
-
-Build serverless applications and deploy instantly across the globe for exceptional performance, reliability, and scale.
-
-</Description>
+Cloudflare Workers gives you a fast, scalable way to build serverless **full-stack applications**, running on Cloudflare's **global edge** network for **low-latency** performance. Use your language and framework of choice, built-in CDN caching, globally distributed storage, and serverless AI inference to build and scale effortlessly without managing infrastructure.
 
 <Plan type="all" />
 
-Cloudflare Workers provides a [serverless](https://www.cloudflare.com/learning/serverless/what-is-serverless/) execution environment that allows you to create new applications or augment existing ones without configuring or maintaining infrastructure.
-
-Cloudflare Workers runs on [Cloudflare’s global network](https://www.cloudflare.com/network/) in hundreds of cities worldwide, offering both [Free and Paid plans](/workers/platform/pricing/).
-
-<LinkButton variant="primary" href="/workers/get-started/guide/">
-	Get started
-</LinkButton> <LinkButton
-	variant="secondary"
-	href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create"
->
+<Tabs>
+<TabItem label="Dashboard">
+<LinkButton variant="primary" href="https://dash.cloudflare.com/?to=/:account/workers-and-pages/create">
 	Workers dashboard
 </LinkButton>
+...continue with the [dashboard getting started guide](/workers/get-started/dashboard/)
+</TabItem>
+<TabItem label="CLI">
+<PackageManagers
+	type="create"
+	pkg="cloudflare@latest"
+	args={"my-first-worker"}
+/>
+...continue with the [CLI getting started guide](/workers/get-started/guide/)
+</TabItem>
+</Tabs>
 
----
+## Explore the possibilities
 
-## Features
+* Simple deployment with streamlined configuration
+* Supports both stateful and stateless applications
+* Multi-language compatibility, including JavaScript, TypeScript, Python, and Rust
+* Works with popular full-stack [frameworks](/workers/frameworks/)
+* Connects to [data stores](/workers/databases/connecting-to-databases/) with [smart placement](/workers/configuration/smart-placement/) for fast startup and high performance
+* Built-in support for [cron jobs](/workers/configuration/cron-triggers/), [workflows](/workflows/), and [queues](/queues/)
+* [Pricing](/workers/platform/pricing/) that's affordable at any scale
 
-<Feature header="Wrangler" href="/workers/wrangler/install-and-update/">
+Integrations via [Bindings](/workers/runtime-apis/bindings/) let you connect to external services like databases, APIs, and storage, enabling functionality with a few lines of code:
+| Storage | Compute | Media |
+|----------|----------|----------|
+| <AstroIcon name="durable-objects"/> [Durable Objects](/durable-objects) <br /> Scalable stateful storage for real-time coordination. | <AstroIcon name="vectorize"/> [Vectorize](/vectorize)  <br /> Vector database for AI-powered semantic search.| <AstroIcon name="cache"/> [Cache / CDN](/cache)  <br /> Global caching for high-performance, low-latency delivery. |
+| <AstroIcon name="d1"/> [D1](/d1) <br /> Serverless SQL database built for fast, global queries.  | <AstroIcon name="zaraz"/> [Zaraz](/zaraz) <br /> Privacy-friendly third-party script loading at the edge.  | <AstroIcon name="hyperdrive"/> [Hyperdrive](/hyperdrive) <br /> Accelerate database queries by caching at the edge. |
+| <AstroIcon name="kv"/> [KV](/kv) <br /> Low-latency key-value storage for fast, edge-cached reads. |   |
+| <AstroIcon name="r2"/> [R2](/r2) <br /> Zero-egress object storage for cost-efficient data access. |  |
 
-The Workers command-line interface, Wrangler, allows you to [create](/workers/wrangler/commands/#init), [test](/workers/wrangler/commands/#dev), and [deploy](/workers/wrangler/commands/#deploy) your Workers projects.
-
-</Feature>
-
-<Feature header="Bindings" href="/workers/runtime-apis/bindings/">
-
-Bindings allow your Workers to interact with resources on the Cloudflare developer platform, including [R2](/r2/), [KV](/kv/concepts/how-kv-works/), [Durable Objects](/durable-objects/), and [D1](/d1/).
-
-</Feature>
-
-<Feature header="Playground" href="/workers/playground/" cta="Use the Playground">
-
-The Playground is a sandbox which gives you an instant way to preview and test a Worker directly in the browser against any site. No setup required.
-
-</Feature>
-
----
-
-## Related products
-
-<RelatedProduct header="Workers AI" href="/workers-ai/" product="workers-ai">
-
-Run machine learning models, powered by serverless GPUs, on Cloudflare’s global network.
-
-</RelatedProduct>
-
-<RelatedProduct header="R2" href="/r2/" product="r2">
-
-Store large amounts of unstructured data without the costly egress bandwidth fees associated with typical cloud storage services.
-
-</RelatedProduct>
-
-<RelatedProduct header="D1" href="/d1/" product="d1">
-
-Create new serverless SQL databases to query from your Workers and Pages projects.
-
-</RelatedProduct>
-
-<RelatedProduct header="Durable Objects" href="/durable-objects/" product="durable-objects">
-
-A globally distributed coordination API with strongly consistent storage.
-
-</RelatedProduct>
-
-<RelatedProduct header="KV" href="/kv/" product="kv">
-
-Create a global, low-latency, key-value data storage.
-
-</RelatedProduct>
-
-<RelatedProduct header="Queues" href="/queues/" product="queues">
-
-Send and receive messages with guaranteed delivery and no charges for egress bandwidth.
-
-</RelatedProduct>
-
-<RelatedProduct header="Hyperdrive" href="/hyperdrive/" product="hyperdrive">
-
-Turn your existing regional database into a globally distributed database.
-
-</RelatedProduct>
-
-<RelatedProduct header="Vectorize" href="/vectorize/" product="vectorize">
-
-Build full-stack AI applications with Vectorize, Cloudflare’s vector database.
-
-</RelatedProduct>
-
-<RelatedProduct header="Zaraz" href="/zaraz/" product="zaraz">
-
-Offload third-party tools and services to the cloud and improve the speed and security of your website.
-
-</RelatedProduct>
-
----
-
-## More resources
-
+## See Workers in action
 <CardGrid>
 
-<LinkTitleCard
-	title="Learning Path"
-	href="/learning-paths/workers/concepts/"
-	icon="pen"
->
-	New to Workers? Get started with the Workers Learning Path.
+<LinkTitleCard title="Example: Using the Cache API" href="/workers/examples/cache-api/">
+Use the Cache API to store responses in Cloudflare's cache.
 </LinkTitleCard>
 
-<LinkTitleCard
-	title="Plans"
-	href="/workers/platform/pricing/"
-	icon="seti:shell"
->
-	Learn about Free and Paid plans.
+<LinkTitleCard title="Example: Setting Chron Triggers" href="/workers/examples/cron-trigger/">
+Set a Cron Trigger for your Worker.
 </LinkTitleCard>
 
-<LinkTitleCard title="Limits" href="/workers/platform/limits/" icon="document">
-	Learn about plan limits (Free plans get 100,000 requests per day).
+<LinkTitleCard title="Tutorial: Build an Image Generator with Workers AI" href="/workers-ai/tutorials/image-generation-playground/">
+In this series of videos, Kristian Freeman builds an AI Image Playground.
 </LinkTitleCard>
 
-<LinkTitleCard
-	title="Storage options"
-	href="/workers/platform/storage-options/"
-	icon="open-book"
->
-	Learn which storage option is best for your project.
-</LinkTitleCard>
-
-<LinkTitleCard
-	title="Developer Discord"
-	href="https://discord.cloudflare.com"
-	icon="discord"
->
-	Connect with the Workers community on Discord to ask questions, share what you
-	are building, and discuss the platform with other developers.
-</LinkTitleCard>
-
-<LinkTitleCard
-	title="@CloudflareDev"
-	href="https://x.com/cloudflaredev"
-	icon="x.com"
->
-	Follow @CloudflareDev on Twitter to learn about product announcements, and
-	what is new in Cloudflare Workers.
+<LinkTitleCard title="Tutorial: Workers Observability" href="/workers/observability/logs/#video-tutorial">
+Learn how to collect, store, and analyze logs in the Cloudflare dashboard.
 </LinkTitleCard>
 
 </CardGrid>
+
+[More tutorials](/workers/tutorials/)
+[More examples](/workers/examples/)
+
+[Join our Discord](https://discord.com/invite/cloudflaredev)
