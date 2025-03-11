@@ -1,22 +1,4 @@
----
-title: Extended ruleset
-pcx_content_type: configuration
-sidebar:
-  order: 3
-head:
-  - tag: title
-    content: Extended suggested ruleset
----
-
-If you are unable to export your current perimeter firewall rules, consider identifying categories of systems or user groups that reside on your Magic Transit prefixes. For example:
-
-- [Endpoints (user devices)](#endpoints-user-devices)
-- [Internal routers](#internal-routerfirewall-ip-addresses)
-- [Web servers](#web-servers)
-- [Non-web servers](#non-web-servers)
-
-For each item above, consider the requirements in terms of their permitted Internet access. For example, permit what is required for legitimate traffic and block the rest.
-
+---\ntitle: Extended ruleset\npcx_content_type: configuration\ndescription: Learn best practices for creating extended rulesets in Cloudflare Magic Firewall. Optimize security by categorizing systems and managing traffic effectively.\nsidebar:\n  order: 3\nhead:\n  - tag: title\n    content: Extended suggested ruleset\n---\n\nIf you are unable to export your current perimeter firewall rules, consider identifying categories of systems or user groups that reside on your Magic Transit prefixes. For example:\n\n- [Endpoints (user devices)](#endpoints-user-devices)\n- [Internal routers](#internal-routerfirewall-ip-addresses)\n- [Web servers](#web-servers)\n- [Non-web servers](#non-web-servers)\n\nFor each item above, consider the requirements in terms of their permitted Internet access. For example, permit what is required for legitimate traffic and block the rest.
 ## Create lists for using Magic Firewall rules
 
 For more information on lists, refer to [Use rule lists](/magic-firewall/how-to/use-rules-list/).
