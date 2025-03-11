@@ -208,11 +208,29 @@ API value: `redirect`
 
 </Details>
 
-The Redirect action allows you to redirect matched HTTP requests to a different URL you specify.
+The Redirect action allows you to redirect matched HTTP requests to a different URL you specify. For example, if your users browse to the public web page of a SaaS app, you can redirect them to your own self-hosted instance, a single sign-on page, or an internal policy page.
 
 #### Policy URL redirect
 
-When you turn on **Send policy context**, Gateway will include context in logs.
+In **Policy URL redirect**, you can define what URL to redirect matched requests to.
+
+When you turn on **Send policy context**, Gateway will send the original site URL and redirect context to the redirected URL. Full list of fields:
+
+<Details header="Policy context fields">
+
+- User email
+- Site URL
+- URL Category
+- Original HTTP Referer
+- Rule ID
+- Source IP
+- Device ID
+- Application Name
+- Account ID
+- Connection ID
+- Request ID
+
+</Details>
 
 When you turn on **Preserve original URL and query string**, Gateway will append the original path and query string to the redirect URL. For example, if the original URL is `example.com/path/to/page?query&string`, Gateway will redirect it to `internalapp.com/path/to/page?query&string`.
 
