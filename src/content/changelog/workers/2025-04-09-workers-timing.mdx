@@ -1,0 +1,23 @@
+---
+title: Surfacing CPU time and Wall time for Workers Invocations
+description: Workers Observability tooling now shows CPU time and Wall time for a Workers Invocation.
+products:
+  - workers
+date: 2025-04-09T11:00:00Z
+---
+
+You can now track the CPU time and Wall time across your Workers Invocations.
+
+- For Workers Logs, CPU time and Wall time are surfaced in the [Invocation Log](/workers/observability/logs/workers-logs/#invocation-logs)..
+- For Tail Workers, CPU time and Wall time are surfaced at the top level of the `events` object.
+- For Workers Logpush, <TODO>
+
+Youcan use a Workers Logs filter to search for logs where Wall time exceeds 100ms.
+
+![Workers Logs Wall Time Filter](src/assets/images/changelog/workers/observability/2025-04-09-wall-time-filter.png)
+
+You can also use the Workers Observability Query Builder to find the median CPU time and median Wall time for all of our Workers.
+
+<TODO screenshot> 
+
+Learn more about [Workers Logs](/workers/observability/logs/workers-logs/), [Tail Workers](/workers/observability/logs/tail-workers/), and [Workers Logpush](/workers/observability/logs/logpush/).
