@@ -558,7 +558,7 @@ When making changes to your Durable Object classes, you must perform a migration
 
   - A unique identifier for this migration.
 
-- `new_classes` <Type text="string[]" /> <MetaInfo text="optional" />
+- `new_sqlite_classes` <Type text="string[]" /> <MetaInfo text="optional" />
 
   - The new Durable Objects being defined.
 
@@ -577,7 +577,7 @@ Example:
 ```toml title="wrangler.toml"
 [[migrations]]
 tag = "v1" # Should be unique for each entry
-new_classes = ["DurableObjectExample"] # Array of new classes
+new_sqlite_classes = ["DurableObjectExample"] # Array of new classes
 
 [[migrations]]
 tag = "v2"

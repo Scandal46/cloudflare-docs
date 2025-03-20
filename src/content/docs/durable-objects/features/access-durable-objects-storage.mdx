@@ -42,7 +42,7 @@ export class Counter extends DurableObject {
   }
 }
 ```
-## Remove storage
+### Remove a Durable Object's storage
 
 A Durable Object fully ceases to exist if, when it shuts down, its storage is empty. If you never write to a Durable Object's storage at all (including setting <GlossaryTooltip term="alarm">alarms</GlossaryTooltip>), then storage remains empty, and so the Durable Object will no longer exist once it shuts down.
 

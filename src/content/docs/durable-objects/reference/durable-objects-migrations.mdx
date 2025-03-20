@@ -40,14 +40,14 @@ To apply a Create migration:
 	```toml
 	[[migrations]]
 	tag = "<v1>" # Migration identifier. This should be unique for each migration entry
-	new_classes = ["<NewDurableObjectClass>"] # Array of new classes
+	new_sqlite_classes = ["<NewDurableObjectClass>"] # Array of new classes
 	# For SQLite storage backend use new_sqlite_classes=["<NewDurableObjectClass>"] instead
 	```
 	</WranglerConfig>
 	The Create migration contains:
 
 	- A `tag` to identify the migration.
-	- The array `new_classes`, which contains the new Durable Object class.
+	- The array `new_sqlite_classes`, which contains the new Durable Object class.
 
 2. Ensure you reference the correct name of the Durable Object class in your Worker code.
 3. Deploy the Worker.
@@ -67,7 +67,7 @@ class_name = "DurableObjectAClass"
 # Add the lines below for a Create migration.
 [[migrations]]
 tag = "v1"
-new_classes = ["DurableObjectAClass"]
+new_sqlite_classes = ["DurableObjectAClass"]
 ```
 </WranglerConfig>
 
@@ -263,7 +263,7 @@ To illustrate an example migrations workflow, the `DurableObjectExample` class c
 # Creating a new Durable Object class
 [[migrations]]
 tag = "v1" # Migration identifier. This should be unique for each migration entry
-new_classes = ["DurableObjectExample"] # Array of new classes
+new_sqlite_classes = ["DurableObjectExample"] # Array of new classes
 ```
 
 </WranglerConfig>

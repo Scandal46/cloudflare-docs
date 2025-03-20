@@ -7,14 +7,7 @@ sidebar:
 
 import { Render } from "~/components"
 
-Durable Objects are available both on Workers Free and Workers Paid plans.
-
-- **Workers Free plan**: Only Durable Objects with SQLite storage backend are available.
-- **Workers Paid plan**: Durable Objects with both SQLite storage and key-value storage are available.
-
-:::note
-If you wish to downgrade from a Workers Paid plan to a Workers Free plan, you must first ensure that you have deleted all namespaces for Durable Objects with key-value storage backend.
-:::
+<Render file="do-plans-note"/>
 
 Durable Objects can incur two types of billing: compute and storage.
 
@@ -133,4 +126,4 @@ Yes, although minimal. Empty tables can consume at least a few kilobytes, based 
 
 All writes to a SQLite-backed Durable Object stores nominal amounts of metadata in internal tables in the Durable Object, which counts towards your billable storage.
 
-The metadata remains in the Durable Object until you call [`deleteAll()`](/durable-objects/api/storage-api#deleteall).
+The metadata remains in the Durable Object until you call [`deleteAll()`](/durable-objects/api/storage-api/#deleteall).
