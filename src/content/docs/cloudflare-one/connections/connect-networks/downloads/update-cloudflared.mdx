@@ -9,9 +9,9 @@ import { TabItem, Tabs, Render } from "~/components";
 
 Updates will cause `cloudflared` to restart which will impact traffic currently being served. You can perform zero-downtime upgrades by using Cloudflare's [Load Balancer product](/cloudflare-one/connections/connect-networks/downloads/update-cloudflared/#update-with-cloudflare-load-balancer) or by using [multiple `cloudflared` instances](/cloudflare-one/connections/connect-networks/downloads/update-cloudflared/#update-with-multiple-cloudflared-instances).
 
-## Remotely-managed tunnels
+## Remotely and locally-managed tunnels
 
-To update `cloudflared` for a tunnel [created through the dashboard](/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel/):
+To update `cloudflared` for a [remotely-managed tunnel](/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel/) created through the dashboard or a [locally-managed tunnel](/cloudflare-one/connections/connect-networks/do-more-with-tunnels/local-management/):
 
 <Tabs> <TabItem label="Windows">
 
@@ -92,12 +92,13 @@ sudo systemctl restart cloudflared.service
 
 </TabItem> <TabItem label="Docker">
 
-1. In Zero Trust, go to **Networks** > **Tunnels**.
-2. Select your tunnel and select **Configure**.
-3. Select **Docker** and copy the installation command shown in the dashboard.
-4. Paste this command into a terminal window.
+Run the following command:
 
-This creates a new container from the latest `cloudflared` image. You can now delete the old container.
+```sh
+docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token eyJhIjoiYTY3ZTE0ZGFhNWY4ZGNlZWI5MWZlNTQ0OWJhNDk2ZWIiLCJ0IjoiOGU2MTY3MWEtYjQ4ZS00OWI2LWI4OGUtZDNhOWU1NzQzYWIwIiwicyI6Ik5qUTFOR013TnpZdE5qVmxNUzAwWXprNExUZzJaVGd0TXpGalpERTBOelUxWkRBMSJ9
+```
+
+This command creates a new container from the latest `cloudflared` image. You can now delete the old container.
 
 </TabItem> <TabItem label="Other">
 
