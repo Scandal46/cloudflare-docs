@@ -534,6 +534,33 @@ There are some known limitations for D1 read replication.
 
 To account for replica lag, it is important to consider the consistency model for D1. A consistency model is a logical framework that governs how a database system serves user queries (how the data is updated and accessed) when there are multiple database instances. Different models can be useful in different use cases. Most database systems provide [read committed](https://jepsen.io/consistency/models/read-committed), [snapshot isolation](https://jepsen.io/consistency/models/snapshot-isolation), or [serializable](https://jepsen.io/consistency/models/serializable) consistency models, depending on their configuration.
 
+#### Without Sessions API
+
+Consider what could happen in a distributed database system.
+
+![Distributed replicas could cause inconsistencies without Sessions API](/images/d1/consistency-without-sessions-api.png)
+
+1. Your SQL write query is processed by the primary database instance.
+2. You obtain a response acknowledging the write query.
+3. Your subsequent SQL read query goes to a read replica.
+4. The read replica has not yet been updated, so does not contain changes from your SQL write query. The returned results are inconsistent from your perspective.
+
+#### With Sessions API
+
+When using D1 Sessions API, your queries obtain bookmarks which allows the read replica to only serve sequentially consistent data.
+
+![D1 offers sequential consistency when using Sessions API](/images/d1/consistency-with-sessions-api.png)
+
+1. SQL write query is processed by the primary database instance.
+2. You obtain a response acknowledging the write query. You also obtain a bookmark (100) which identifies the state of the database after the write query.
+3. Your subsequent SQL read query goes to a read replica, and also provides the bookmark (100).
+4. The read replica will wait until it has been updated to be at least as up-to-date as the provided bookmark (100).
+5. Once the read replica has been updated (bookmark 104), it serves your read query, which is now sequentially consistent.
+
+In the diagram, the returned bookmark is bookmark 104, which is different from the one provided in your read query (bookmark 100). This can happen if there were other writes from other client requests that also got replicated to the read replica in between the two write/read queries you executed.
+
+#### Sessions API provides sequential consistency
+
 D1 read replication offers [sequential consistency](https://jepsen.io/consistency/models/sequential). D1 creates a global order of all operations which have taken place on the database, and can identify the latest version of the database that a query has seen, using [bookmarks](/d1/reference/time-travel/#bookmarks). It then serves the query with a database instance that is at least as up-to-date as the bookmark passed along with the query to execute.
 
 Sequential consistency has properties such as:
