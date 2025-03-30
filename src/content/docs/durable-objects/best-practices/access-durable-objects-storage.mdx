@@ -14,9 +14,27 @@ A Durable Object's [in-memory state](/durable-objects/reference/in-memory-state/
 
 ## Access storage
 
-By default, a <GlossaryTooltip term="Durable Object class">Durable Object class</GlossaryTooltip> leverages a SQLite storage backend.
+We recommend all new <GlossaryTooltip term="Durable Object class">Durable Object classes</GlossaryTooltip> use the SQLite storage backend. Key-value storage backend remains for backwards compatibility, and a migration path from key-value storage to SQL storage for existing Durable Object classes will be offered in the future. 
 
 [Storage API methods](/durable-objects/api/storage-api/#methods) are available on `ctx.storage` parameter passed to the Durable Object constructor. Storage API has SQL APIs and key-value APIs. Only Durable Object classes with a SQLite storage backend can access SQL API.
+
+### Wrangler configuration for SQLite-backed Durable Objects
+
+Use `new_sqlite_classes` on the migration in your Worker's Wrangler file:
+
+<WranglerConfig>
+
+```toml
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_sqlite_classes = ["MyDurableObject"] # Array of new classes
+```
+
+</WranglerConfig>
+
+[SQL API](/durable-objects/api/sql-storage/#exec) is available on `ctx.storage.sql` parameter passed to the Durable Object constructor.
+
+### Initialize instance variables from storage 
 
 A common pattern is to initialize a Durable Object from [persistent storage](/durable-objects/api/storage-api/) and set instance variables the first time it is accessed. Since future accesses are routed to the same Durable Object, it is then possible to return any initialized values without making further calls to persistent storage.
 
@@ -42,37 +60,22 @@ export class Counter extends DurableObject {
   }
 }
 ```
+
 ### Remove a Durable Object's storage
 
 A Durable Object fully ceases to exist if, when it shuts down, its storage is empty. If you never write to a Durable Object's storage at all (including setting <GlossaryTooltip term="alarm">alarms</GlossaryTooltip>), then storage remains empty, and so the Durable Object will no longer exist once it shuts down.
 
 However if you ever write using [Storage API](/durable-objects/api/storage-api/), including setting alarms, then you must explicitly call [`storage.deleteAll()`](/durable-objects/api/storage-api/#deleteall) to empty storage. It is not sufficient to simply delete the specific data that you wrote, such as deleting a key or dropping a table, as some metadata may remain. The only way to remove all storage is to call `deleteAll()`. Calling `deleteAll()` ensures that a Durable Object will not be billed for storage.
 
-## Wrangler configuration for SQLite Durable Objects
-
-Use `new_sqlite_classes` on the migration in your Worker's Wrangler file:
-
-<WranglerConfig>
-
-```toml
-[[migrations]]
-tag = "v1" # Should be unique for each entry
-new_sqlite_classes = ["MyDurableObject"] # Array of new classes
-```
-
-</WranglerConfig>
-
-[SQL API](/durable-objects/api/sql-storage/#exec) is available on `ctx.storage.sql` parameter passed to the Durable Object constructor.
-
-## Examples
+## SQL API Examples
 
 <Render file="durable-objects-sql" />
 
-<Render file="durable-objects-vs-d1" />
-
-## Index for SQLite Durable Objects
+## Indexes in SQLite
 
 Creating indexes for your most queried tables and filtered columns reduces how much data is scanned and improves query performance at the same time. If you have a read-heavy workload (most common), this can be particularly advantageous. Writing to columns referenced in an index will add at least one (1) additional row written to account for updating the index, but this is typically offset by the reduction in rows read due to the benefits of an index.
+
+<Render file="durable-objects-vs-d1" />
 
 ## Related resources
 
