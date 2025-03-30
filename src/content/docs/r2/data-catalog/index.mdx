@@ -1,0 +1,48 @@
+---
+pcx_content_type: navigation
+title: R2 Data Catalog
+sidebar:
+  order: 5
+  group:
+    badge: Beta
+head: []
+description: A managed Apache Iceberg data catalog built directly into R2 buckets.
+---
+
+import { Render, LinkCard } from "~/components";
+
+:::note
+R2 Data Catalog is in **public beta**, and any developer with [R2 subscription](/r2/pricing/) can start using it. Currently, outside of standard R2 storage and operations, you will not be billed for your use of R2 Data Catalog
+:::
+
+R2 Data Catalog is a managed [Apache Iceberg](https://iceberg.apache.org/) data catalog built directly into your R2 bucket. It manages Iceberg table metadata (e.g., schemas, snapshots, partition specs, etc) and provides an Iceberg REST interface so you can query your tables with engines like Spark, Trino, and PyIceberg.
+
+R2 Data Catalog makes it easy to turn an R2 bucket into a data warehouse or lakehouse for a variety of analytical workloads including log analytics, business intelligence, and data pipelines. R2’s zero-egress fee model means that data users and consumers can access and analyze data from different clouds, data platforms, or regions without incurring transfer costs.
+
+## What is Apache Iceberg?
+
+[Apache Iceberg](https://iceberg.apache.org/) is an open table format designed to handle large-scale analytics datasets stored in object storage. Key features include:
+
+- ACID transactions - Ensures reliable, concurrent reads and writes with full data integrity.
+- Optimized metadata - Avoids costly full table scans by using indexed metadata for faster queries.
+- Full schema evolution - Allows adding, renaming, and deleting columns without rewriting data.
+
+## Why do you need a data catalog?
+
+While Iceberg data files reside in object storage, the associated table metadata (e.g., schemas, snapshots, and partition specs) must be managed by a central catalog.
+
+Catalogs also ensure consistent access and allow multiple query engines to share the same underlying tables.
+
+## Learn more
+
+<LinkCard
+	title="Get started"
+	href="/r2/data-catalog/get-started/"
+	description="Learn how to enable the R2 Data Catalog on your bucket, load sample data, and run your first query."
+/>
+
+<LinkCard
+	title="Configuration examples"
+	href="/r2/data-catalog/config-examples/"
+	description="Find detailed setup instructions for Apache Spark and other common query engines."
+/>
