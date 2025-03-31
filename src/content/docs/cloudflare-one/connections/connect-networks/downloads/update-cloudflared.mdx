@@ -92,12 +92,37 @@ sudo systemctl restart cloudflared.service
 
 </TabItem> <TabItem label="Docker">
 
-1. In Zero Trust, go to **Networks** > **Tunnels**.
+**If you created a remotely-managed tunnel using the [dashboard](/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel/):**
+
+1. In [Zero Trust](https://one.dash.cloudflare.com/), go to **Networks** > **Tunnels**.
 2. Select your tunnel and select **Configure**.
-3. Select **Docker** and copy the installation command shown in the dashboard.
+3. Select **Docker** and copy the installation command shown in the dashboard. The copied command will contain your token.
 4. Paste this command into a terminal window.
 
-This creates a new container from the latest `cloudflared` image. You can now delete the old container.
+This command creates a new container from the latest `cloudflared` image. You can now delete the old container.
+
+:::caution
+
+Cloudflare recommends creating remotely-managed tunnels when working with Docker.
+
+:::
+
+**If you created a remotely or locally-managed tunnel using the [API](/cloudflare-one/connections/connect-networks/get-started/create-remote-tunnel-api/), run the following command:**
+
+```sh
+docker run --pull always cloudflare/cloudflared:latest tunnel --no-autoupdate run --token <TOKEN>
+```
+
+**If you created a locally-managed tunnel using the [CLI](/cloudflare-one/connections/connect-networks/do-more-with-tunnels/local-management/create-local-tunnel/#2-authenticate-cloudflared):**
+
+1. You must mount your local `cloudflared` [directory](/cloudflare-one/connections/connect-networks/do-more-with-tunnels/local-management/local-tunnel-terms/#default-cloudflared-directory) into the container.
+
+2. Run the following command to update `cloudflared`:
+
+    ```sh
+    docker run --pull always -v /root/.cloudflared:/home/nonroot/.cloudflared cloudflare/cloudflared:latest tunnel --no-autoupdate run <TUNNEL-ID>
+    ```
+
 
 </TabItem> <TabItem label="Other">
 
