@@ -15,6 +15,8 @@ In addition to [anti-virus (AV) scanning](/cloudflare-one/policies/gateway/http-
 
 If AV scanning does not detect malware in a file download, Gateway will quarantine the file in the sandbox. If the file has not been downloaded before, Gateway will monitor any actions taken by the file and compare them to known malware patterns. During this process, Gateway will display an interstitial page in the user's browser. If the sandbox does not detect malicious activity, Gateway will release the file from quarantine and download it to your user's device. If the sandbox detects malicious activity, Gateway will block the download. For any subsequent downloads of the file, Gateway will remember and apply its allow/block decision.
 
+Gateway executes quarantined files in a sandboxed Windows operating system environment. Using machine learning, the sandbox will compare how files of a certain type behave compared to how confirmed samples behave. The sandbox will detect files actions down to the kernel level and compare these a real-time malware database. In addition, Gateway checks the sandbox's network activity for malicious behavior and data exfiltration.
+
 Gateway will log any file sandbox decisions in your [HTTP logs](/cloudflare-one/insights/logs/gateway-logs/#http-logs).
 
 ```mermaid
