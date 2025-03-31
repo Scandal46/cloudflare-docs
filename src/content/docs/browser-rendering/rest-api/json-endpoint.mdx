@@ -21,7 +21,7 @@ The `/json` endpoint extracts structured data from a webpage. You can specify th
 
 This example captures webpage data by providing both a prompt and a JSON schema. The prompt guides the extraction process, while the JSON schema defines the expected structure of the output.
 
-```bash
+```bash {11-13} collapse={15-48}
 curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID/browser-rendering/json' \
   --header 'authorization: Bearer CF_API_TOKEN' \
   --header 'content-type: application/json' \
@@ -57,7 +57,7 @@ curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID
 ```
 
 
-```json output
+```json output {11-13} collapse={15-48}
 {
 	"success": true,
 	"result": {
@@ -122,7 +122,7 @@ curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID
 
 In this case, you supply a JSON schema via the `response_format` parameter. The schema defines the structure of the extracted data.
 
-```bash
+```bash {11-13} collapse={15-48}
 curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID/browser-rendering/json' \
   --header 'authorization: Bearer CF_API_TOKEN' \
   --header 'content-type: application/json' \
@@ -154,7 +154,7 @@ curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID
 ```
 
 
-```json output
+```json output {11-13} collapse={15-48}
 {
 	"success": true,
 	"result": {
