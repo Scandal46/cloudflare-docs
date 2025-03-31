@@ -14,7 +14,7 @@ A Durable Object's [in-memory state](/durable-objects/reference/in-memory-state/
 
 ## Access storage
 
-We recommend all new <GlossaryTooltip term="Durable Object class">Durable Object classes</GlossaryTooltip> use the SQLite storage backend. [Key-value storage backend](/durable-objects/reference/durable-objects-migrations/#create-durable-object-class -with-key-value-storage) remains for backwards compatibility, and a migration path from key-value storage to SQL storage for existing Durable Object classes will be offered in the future. 
+We recommend all new <GlossaryTooltip term="Durable Object class">Durable Object classes</GlossaryTooltip> use the SQLite storage backend. [Key-value storage backend](/durable-objects/reference/durable-objects-migrations/#create-durable-object-class -with-key-value-storage) remains for backwards compatibility, and a migration path from key-value storage to SQL storage for existing Durable Object classes will be offered in the future.
 
 [Storage API methods](/durable-objects/api/storage-api/#methods) are available on `ctx.storage` parameter passed to the Durable Object constructor. Storage API has SQL APIs and key-value APIs. Only Durable Object classes with a SQLite storage backend can access SQL API.
 
@@ -32,9 +32,9 @@ new_sqlite_classes = ["MyDurableObject"] # Array of new classes
 
 </WranglerConfig>
 
-[SQL API](/durable-objects/api/sql-storage/#exec) is available on `ctx.storage.sql` parameter passed to the Durable Object constructor.
+[SQL API](/durable-objects/api/storage-api/#exec) is available on `ctx.storage.sql` parameter passed to the Durable Object constructor.
 
-### Initialize instance variables from storage 
+### Initialize instance variables from storage
 
 A common pattern is to initialize a Durable Object from [persistent storage](/durable-objects/api/storage-api/) and set instance variables the first time it is accessed. Since future accesses are routed to the same Durable Object, it is then possible to return any initialized values without making further calls to persistent storage.
 
