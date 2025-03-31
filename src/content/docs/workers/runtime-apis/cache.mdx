@@ -53,7 +53,7 @@ await myCache.match(request);
 When using the cache API, avoid overriding the hostname in cache requests, as this can lead to unnecessary DNS lookups and cache inefficiencies. Always use the hostname that matches the domain associated with your Worker.
 
 ```js
-// avoid overriding the URL in request or passing a new request into the cache API
+// Do not do this
 request.url = "https://some-overridden-value.com/";
 
 let myCache = await caches.open('custom:cache');
