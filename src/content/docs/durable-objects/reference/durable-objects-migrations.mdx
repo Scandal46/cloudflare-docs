@@ -73,6 +73,22 @@ new_sqlite_classes = ["DurableObjectAClass"]
 
 </Details>
 
+### Create Durable Object class with key-value storage
+
+We recommend all new <GlossaryTooltip term="Durable Object class">Durable Object classes</GlossaryTooltip> use the SQLite storage backend. Key-value storage backend remains for backwards compatibility. 
+
+Use `new_classes` on the migration in your Worker's Wrangler file:
+
+<WranglerConfig>
+
+```toml
+[[migrations]]
+tag = "v1" # Should be unique for each entry
+new_classes = ["MyDurableObject"] # Array of new classes
+```
+
+</WranglerConfig>
+
 ## Delete migration
 
 Running a Delete migration will delete all Durable Objects associated with the deleted class, including all of their stored data.
