@@ -19,33 +19,41 @@ The `/json` endpoint extracts structured data from a webpage. You can specify th
 
 ### With a Prompt and JSON schema
 
-This example captures webpage data by providing both a prompt and a JSON schema. If multiple headings exist, the first occurrence of each (such as `h1`, `h2`) is returned.
+This example captures webpage data by providing both a prompt and a JSON schema. The prompt guides the extraction process, while the JSON schema defines the expected structure of the output.
 
 ```bash
 curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID/browser-rendering/json' \
   --header 'authorization: Bearer CF_API_TOKEN' \
   --header 'content-type: application/json' \
   --data '{
-    "url": "http://demoto.xyz/headings",
-    "prompt": "Get the heading from the page. If there are many then grab the first one.",
-    "response_format": {
-      "type": "json_schema",
-      "json_schema": {
+  "url": "https://developers.cloudflare.com/",
+  "prompt": "Get me the list of AI products",
+  "response_format": {
+    "type": "json_schema",
+    "json_schema": {
         "type": "object",
         "properties": {
-          "h1": {
-            "type": "string"
-          },
-          "h2": {
-            "type": "string"
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
           }
-        },
-        "required": [
-          "h1"
-        ]
+        }
       }
-    }
-  }'
+  }
+}'
 ```
 
 #### JSON response
@@ -54,23 +62,44 @@ curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID
 {
 	"success": true,
 	"result": {
-		"h1": "Heading 1",
-		"h2": "Heading 2"
+		"products": [
+			{
+				"name": "Build a RAG app",
+				"link": "https://developers.cloudflare.com/workers-ai/tutorials/build-a-retrieval-augmented-generation-ai/"
+			},
+			{
+				"name": "Workers AI",
+				"link": "https://developers.cloudflare.com/workers-ai/"
+			},
+			{
+				"name": "Vectorize",
+				"link": "https://developers.cloudflare.com/vectorize/"
+			},
+			{
+				"name": "AI Gateway",
+				"link": "https://developers.cloudflare.com/ai-gateway/"
+			},
+			{
+				"name": "AI Playground",
+				"link": "https://playground.ai.cloudflare.com/"
+			}
+		]
 	}
 }
 ```
 
 ### With only a prompt
 
-In this example, only a prompt is provided. The endpoint will use the prompt to extract the heading information from the page.
+In this example, only a prompt is provided. The endpoint will use the prompt to extract the data, but the response will not be structured according to a JSON schema.
+This is useful for simple extractions where you don't need a specific format.
 
 ```bash
 curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID/browser-rendering/json' \
   --header 'authorization: Bearer CF_API_TOKEN' \
   --header 'content-type: application/json' \
   --data '{
-    "url": "http://demoto.xyz/headings",
-    "prompt": "Get the heading from the page in the form of an object like h1, h2. If there are many headings of the same kind then grab the first one."
+    "url": "https://developers.cloudflare.com/",
+    "prompt": "get me the list of AI products"
   }'
 ```
 
@@ -80,8 +109,13 @@ curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID
 {
 	"success": true,
 	"result": {
-		"h1": "Heading 1",
-		"h2": "Heading 2"
+		"AI Products": [
+			"Build a RAG app",
+			"Workers AI",
+			"Vectorize",
+			"AI Gateway",
+			"AI Playground"
+		]
 	}
 }
 ```
@@ -94,25 +128,30 @@ In this case, you supply a JSON schema via the `response_format` parameter. The 
 curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID/browser-rendering/json' \
   --header 'authorization: Bearer CF_API_TOKEN' \
   --header 'content-type: application/json' \
-  --data '{
-    "url": "http://demoto.xyz/headings",
-    "response_format": {
-      "type": "json_schema",
-      "json_schema": {
+  --data '"response_format": {
+    "type": "json_schema",
+    "json_schema": {
         "type": "object",
         "properties": {
-          "h1": {
-            "type": "string"
-          },
-          "h2": {
-            "type": "string"
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ]
+            }
           }
-        },
-        "required": [
-          "h1"
-        ]
+        }
       }
-    }
   }'
 ```
 
@@ -122,14 +161,68 @@ curl --request POST 'https://api.cloudflare.com/client/v4/accounts/CF_ACCOUNT_ID
 {
 	"success": true,
 	"result": {
-		"h1": "Heading 1",
-		"h2": "Heading 2"
+		"products": [
+			{
+				"name": "Workers",
+				"link": "https://developers.cloudflare.com/workers/"
+			},
+			{
+				"name": "Pages",
+				"link": "https://developers.cloudflare.com/pages/"
+			},
+			{
+				"name": "R2",
+				"link": "https://developers.cloudflare.com/r2/"
+			},
+			{
+				"name": "Images",
+				"link": "https://developers.cloudflare.com/images/"
+			},
+			{
+				"name": "Stream",
+				"link": "https://developers.cloudflare.com/stream/"
+			},
+			{
+				"name": "Build a RAG app",
+				"link": "https://developers.cloudflare.com/workers-ai/tutorials/build-a-retrieval-augmented-generation-ai/"
+			},
+			{
+				"name": "Workers AI",
+				"link": "https://developers.cloudflare.com/workers-ai/"
+			},
+			{
+				"name": "Vectorize",
+				"link": "https://developers.cloudflare.com/vectorize/"
+			},
+			{
+				"name": "AI Gateway",
+				"link": "https://developers.cloudflare.com/ai-gateway/"
+			},
+			{
+				"name": "AI Playground",
+				"link": "https://playground.ai.cloudflare.com/"
+			},
+			{
+				"name": "Access",
+				"link": "https://developers.cloudflare.com/cloudflare-one/policies/access/"
+			},
+			{
+				"name": "Tunnel",
+				"link": "https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/"
+			},
+			{
+				"name": "Gateway",
+				"link": "https://developers.cloudflare.com/cloudflare-one/policies/gateway/"
+			},
+			{
+				"name": "Browser Isolation",
+				"link": "https://developers.cloudflare.com/cloudflare-one/policies/browser-isolation/"
+			},
+			{
+				"name": "Replace your VPN",
+				"link": "https://developers.cloudflare.com/learning-paths/replace-vpn/concepts/"
+			}
+		]
 	}
 }
 ```
-
-## Potential use-cases
-
-1. **Extract movie data:** Retrieve details like name, genre, and release date for the top 10 action movies from the IMDB top 250 list by supplying the appropriate IMDB link and JSON schema.
-2. **Weather information:** Fetch current weather conditions for a location (such as., Edinburgh) using a weather website link (like from BBC Weather).
-3. **Trending news:** Extract top trending posts on Hacker News by providing the Hacker News link along with a JSON schema that includes post title and body.
