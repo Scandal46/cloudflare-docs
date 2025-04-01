@@ -15,3 +15,82 @@ import {
 	MetaInfo,
 	Type,
 } from "~/components";
+
+AutoRAG automatically indexes your data into vector embeddings optimized for semantic search. Once a data source is connected, indexing runs continuously in the background to keep your knowledge base fresh and queryable.
+
+## Supported Data Source
+
+AutoRAG currently supports Cloudflare R2 as the data source for indexing.
+
+To get started, [configure an R2 bucket](/r2/get-started/) containing your data. AutoRAG will automatically scan and process supported files stored in that bucket.
+
+## Supported File Types and Limits
+
+AutoRAG supports the following file formats:
+
+- `.pdf`, `.docx`, `.txt`, `.csv`, `.html`, `.xml`, `.md`
+- Image files such as `.png`, `.jpeg` (used for OCR and image-to-text via Workers AI)
+
+**File limits:**
+
+- Maximum file size: 10 MB
+- Unsupported or oversized files will be skipped and logged as errors
+
+## Continuous Indexing
+
+AutoRAG continuously monitors your data source for updates and reindexes your data automatically.
+
+- **Automatic sync**: AutoRAG checks for updates in the connected R2 bucket every 4 hours.
+- **Manual sync**: You can manually trigger a sync by clicking **"Sync Index"** in the dashboard or calling the API.
+- **Pause indexing**: You can pause indexing to temporarily stop all scheduled checks and reprocessing.
+
+During each cycle, AutoRAG only reprocesses files that have been added or modified since the last indexing run.
+
+## Indexing Workflow
+
+For a breakdown of the full indexing workflow—including ingestion, Markdown conversion, chunking, embedding, and storage—refer to the [How AutoRAG Works](../how-it-works) page.
+
+That page includes a detailed diagram of the indexing and query-time processes.
+
+## Indexing Statuses
+
+Each AutoRAG instance has an associated indexing status to help monitor its state:
+
+| Status             | Description                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `active`           | Indexing is running on schedule and up to date                            |
+| `waiting_to_start` | A new indexing cycle is queued but has not yet started                    |
+| `indexing`         | Indexing is currently in progress                                         |
+| `paused`           | Indexing is manually paused and will not check for updates                |
+| `error`            | A failure occurred (e.g. expired Service API token, misconfigured source) |
+
+Indexing status is visible in the dashboard and available via API.
+
+## File Deletions
+
+If you delete a file from your R2 bucket, AutoRAG does not automatically remove the corresponding data from your vector index.
+
+To remove deleted content from search results, you can:
+
+- Manually delete the associated vectors via API, or
+- Recreate your AutoRAG instance with a fresh data source
+
+Automatic deletion support may be added in the future.
+
+## Indexing Performance
+
+AutoRAG processes files in parallel for efficient indexing. The total time to index depends on the number and type of files in your R2 bucket.
+
+Factors that affect performance include:
+
+- Total number of files and their sizes
+- File formats (e.g., PDFs take longer than plain text)
+- Latency of Workers AI models used for embedding and image processing
+
+Indexing large datasets may take several minutes to complete.
+
+## Best Practices
+
+- Ensure your files are under the size limit to avoid skipped indexing.
+- Use structured formats (Markdown, HTML, plain text) for more accurate embeddings.
+- Keep your Service API token up to date to prevent indexing errors.

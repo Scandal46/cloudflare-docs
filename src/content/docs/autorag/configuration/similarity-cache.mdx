@@ -1,0 +1,110 @@
+---
+pcx_content_type: concept
+title: Similarity cache
+sidebar:
+  order: 4
+---
+
+Semantic caching or similarity-based caching in AutoRAG lets you serve responses from Cloudflare’s cache for queries that are _similar enough_ to previous requests, not just exact matches. This speeds up response times and cuts costs by reusing answers for questions that are close in meaning.
+
+Unlike basic caching, which only works for identical requests, this feature uses an advanced algorithm (MinHash with Locality-Sensitive Hashing) to compare prompts based on their content. It’s perfect when users ask similar questions in different ways—like "What’s the weather today?" and "How’s the weather today?"—and you want to reuse cached responses smartly.
+
+You can control how strict or flexible the similarity matching is with customizable thresholds. Cached responses stay valid for 30 days before expiring.
+
+## How It Works
+
+When a request comes in:
+
+1. AutoRAG checks if a _similar_ prompt (based on your chosen threshold) has been answered before.
+2. If a match is found, it returns the cached response instantly.
+3. If no match is found, it generates a new response, caches it for 30 days, and links it to related data (like document chunks) for future use.
+
+Similarity is measured on a scale from 0 (completely different) to 1 (identical). You pick how close prompts need to be to count as a match—stricter settings need near-identical prompts, while looser ones allow more variation.
+
+To see if a response came from the cache, check the `cf-aig-cache-status` header: `HIT` for cached, `MISS` for new.
+
+---
+
+## How Similarity Matching Works
+
+We use a clever trick called _MinHash with Locality-Sensitive Hashing (LSH)_ to figure out if two prompts are similar. Here’s how it works, step by step, with some real examples:
+
+1. **Break It Down**:  
+   We split your prompt into small pieces (like puzzle bits) to capture its meaning.
+
+   - Example: "What’s the weather like today?" becomes pieces like "What’s the weather," "the weather like," and "weather like today."
+   - Example: "How’s the weather today?" becomes "How’s the weather," "the weather today."
+
+2. **Make a Fingerprint**:  
+   We turn those pieces into a special code—a “fingerprint”—that sums up the prompt. Prompts with lots of overlapping pieces get similar fingerprints.
+
+   - Example: "What’s the weather like today?" and "How’s the weather today?" share bits like "the weather," so their fingerprints are close.
+   - Example: "What’s the weather like today?" vs. "Tell me about cats" have no overlap, so their fingerprints are way different.
+
+3. **Group Similar Ones**:  
+   We toss prompts with similar fingerprints into buckets. This way, we only check a small group instead of every past prompt.
+
+   - Example: "What’s the weather like today?" lands in a "weather questions" bucket with "How’s the weather today?" but not "Tell me about cats."
+   - Example: "Give me a recipe for cake" goes into a "recipe" bucket with "How do I bake a cake?" but not "What’s the time?"
+
+4. **Compare Fast**:  
+   For a new prompt, we check its fingerprint against the buckets. If it’s close enough (based on your threshold), we grab the cached answer.
+   - Example: New prompt "What’s today’s weather?" matches "What’s the weather like today?" (85% similar) and gets the cached response: "It’s sunny, 72°F."
+   - Example: New prompt "How do I cook pasta?" matches "Give me a recipe for pasta" (75% similar) and reuses: "Boil water, add pasta, cook 10 mins."
+
+### Real-World Examples
+
+- **Weather Chatbot**:
+
+  - Cached: "What’s the weather like today?" → "Sunny, 72°F."
+  - New: "How’s the weather today?" → 85% similar, returns "Sunny, 72°F" from cache.
+  - New: "What’s the time?" → 10% similar, generates a new response.
+
+- **Recipe App**:
+
+  - Cached: "How do I bake a cake?" → "Mix flour, sugar, eggs; bake at 350°F for 30 mins."
+  - New: "Give me a cake recipe" → 75% similar, reuses the cached steps.
+  - New: "How’s the weather?" → 5% similar, no match, new response generated.
+
+- **Support Bot**:
+  - Cached: "How do I reset my password?" → "Click ‘Forgot Password’ and follow the link."
+  - New: "How can I change my password?" → 80% similar, uses the cached answer.
+  - New: "What’s your return policy?" → 20% similar, fetches a fresh answer.
+
+This method is fast because it doesn’t compare every word—it uses those fingerprints and buckets to zoom in on likely matches.
+
+---
+
+## Choosing a Threshold
+
+The similarity threshold decides how close two prompts need to be to reuse a cached response. Here’s what you can pick from:
+
+- **Super Strict Match (95%)**:
+
+  - For near-identical prompts—like "What’s the weather?" and "What’s the weather today?"
+  - Fewer cache hits, but super accurate answers.
+
+- **Close Enough (85%)**:
+
+  - For very similar prompts—like "What’s today’s weather?" and "How’s the weather today?"
+  - Balances speed and accuracy (our recommended default).
+
+- **Flexible Friend (75%)**:
+
+  - For fairly similar prompts—like "Tell me about cats" and "What are cats like?"
+  - More cache hits, still keeps things relevant.
+
+- **Anything Goes (60%)**:
+  - For loosely related prompts—like "What’s the weather?" and "What’s the forecast?"
+  - Maximizes reuse, but might stretch relevance a bit.
+
+Test these out to find what fits your app best! Higher thresholds (like 95%) are pickier, while lower ones (like 60%) are more forgiving.
+
+---
+
+:::caution[Cache Behavior Notes]
+
+- **Volatile Cache**: If two similar requests hit at the same time, the first might not cache in time for the second to use it, resulting in a `MISS`.
+- **30-Day Cache**: Cached responses last 30 days, then expire automatically. No custom durations for now.
+- **Data Dependency**: Cached responses are tied to specific document chunks. If those chunks change or get deleted, the cache clears to keep answers fresh.
+  :::
