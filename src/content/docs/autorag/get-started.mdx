@@ -11,9 +11,9 @@ head:
 
 AutoRAG allows developers to create fully managed retrieval-augmented generation (RAG) pipelines to power AI applications with accurate and up-to-date information without needing to manage infrastructure.
 
-## 1. Upload data, or use existing data in R2
+## 1. Upload data or use existing data in R2
 
-AutoRAG integrates with R2 for data import. Create an R2 bucket if you don’t have one and upload your data. 
+AutoRAG integrates with R2 for data import. Create an R2 bucket if you don’t have one and upload your data.
 
 :::note
 Before you create your first bucket, you must purchase R2 from the Cloudflare dashboard.
@@ -29,24 +29,18 @@ To create and upload objects to your bucket from the Cloudflare Dashboard:
 
 To create a new AutoRAG:
 
-1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com) and select **AI** then **AutoRAG**.
-2. Select **Create AutoRAG** and complete the setup process:
-    - Select a **R2 bucket**.
-    - Select an **embedding model**.
-    - Select a **LLM model**.
-    - Select or create an **AI Gateway**.
-    - Enter a **name** for the AutoRAG.
-    - Create a new **API token** or reuse an existing API token.
-3. Select **Create**
+1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com) and select **AI** > **AutoRAG**.
+2. Select **Create AutoRAG**, configure the AutoRAG, and complete the setup process.
+3. Select **Create**.
 
-## 3. Monitor indexing 
+## 3. Monitor indexing
 
-Once created, AutoRAG will create a Vectorize database in your account and begin indexing the data. 
+Once created, AutoRAG will create a Vectorize index in your account and begin indexing the data.
 
 To monitor the indexing progress:
 
 1. From the **AutoRAG** page in the dashboard, locate and select your AutoRAG.
-2. Navigate to the **Overview** page to view the current indexing progress.
+2. Navigate to the **Overview** page to view the current indexing status.
 
 ## 4. Try it out
 
@@ -57,10 +51,9 @@ Once indexing is complete, you can run your first query:
 3. Select **Search with AI** or **Search**.
 4. Enter a **query** to test out its response.
 
-
 ## Use AutoRAG options
 
 Cloudflare provides multiple ways for developers to use AutoRAG in their applications:
 
-- REST API
-- Workers Binding
+- [Workers Binding](/autorag/use-autorag/workers-binding/)
+- [REST API](/autorag/use-autorag/rest-api/)
