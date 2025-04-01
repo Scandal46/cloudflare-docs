@@ -1,11 +1,11 @@
 ---
-title: Ingest records from Workers
+title: Workers
 pcx_content_type: concept
 sidebar:
   order: 2
 head:
   - tag: title
-    content: Pipeline Source - Worker
+    content: Cloudflare Pipelines Source - Worker
 ---
 
 import { Render, PackageManagers } from "~/components";
@@ -55,11 +55,17 @@ To connect your Worker to your Pipeline, you need to create a binding. [Bindings
 
 Open your newly generated `wrangler.toml` configuration file and add the following:
 
-```toml
+import { WranglerConfig } from "~/components";
+
+<WranglerConfig>
+
+```toml title="wrangler.toml"
 [[pipelines]]
-	binding = "MY_PIPELINE"
-	pipeline = "<MY-PIPELINE-NAME>"
+pipeline = "<MY-PIPELINE-NAME>" # The name of your Pipeline
+binding = "MY_PIPELINE" # The binding name, accessed using env.MY_PIPELINT
 ```
+
+</WranglerConfig>
 
 Replace `<MY-PIPELINE-NAME>` with the name of the Pipeline you created in step 2. Next, replace `MY_PIPELINE` with the name you want for your `binding`. The binding must be a valid JavaScript variable name. This is the variable you will use to reference this queue in your Worker.
 
@@ -114,6 +120,5 @@ Copy your `*.workers.dev` subdomain and paste it into a new browser tab. Refresh
 Go to the R2 bucket you created in step 2 via [the Cloudflare dashboard](https://dash.cloudflare.com/). You should see a prefix for today's date. Click through, and you'll find one or more files, containing the records you sent in step 4.
 
 # Local Development
-:::note
-Known issue: When running your Worker locally, sending data to your Pipeline currently results in an error.
-:::
+When running your Worker locally, Pipelines are partially simulated. Worker code which sends data to a Pipeline will execute successfully. However, the full Pipeline, including batching & writing to R2, will not be executed locally.
+
