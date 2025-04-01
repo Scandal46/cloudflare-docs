@@ -91,27 +91,28 @@ API value: `redirect`
 
 The Redirect action allows you to redirect matched HTTP requests to a different URL you specify. For example, if your users browse to the public web page of a SaaS app, you can redirect them to your own self-hosted instance, a single sign-on page, or an internal policy page.
 
-#### Policy URL redirect
+#### Policy settings
 
 In **Policy URL redirect**, you can define what URL to redirect matched requests to.
 
-When you turn on **Send policy context**, Gateway will append the details of the matching HTTP request to the redirected URL as a query string. Policy context fields include:
+When you turn on **Send policy context**, Gateway will append the details of the matching HTTP request to the redirected URL as a query string. Not every context field will be included. Potential policy context fields include:
 
 <Details header="Policy context fields">
 
-| Field                                | Definition                                                                                               | Example                                                    |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| User email                           | The email of the user that made the query                                                                | `&user_email=user@example.com`                             |
-| Site URL                             | The URI of the original request.                                                                         | `&site_uri=https%3A%2F%2Fmalware.testcategory.com%2F`      |
-| URL category                         | The [domain categories](/cloudflare-one/policies/gateway/domain-categories/) of the URL that was blocked | `&request_categories=New%20Domains,Newly%20Seen%20Domains` |
-| Original HTTP referer of the request | The HTTP referer header, if any                                                                          | `&referer=https%3A%2F%2Fexample.com%2F`                    |
-| Rule ID                              | The id of the rule that blocked the request, if any                                                      | `&rule_id=6d48997c-a1ec-4b16-b42e-d43ab4d071d1`            |
-| Source IP address                    | The IP that triggered the block                                                                          | `&source_ip=203.0.113.5`                                   |
-| Device ID                            | The ID of the device that triggered the block, if any                                                    | `&device_id=6d48997c-a1ec-4b16-b42e-d43ab4d071d1`          |
-| Application name                     | The name of the application this domain corresponds to, if any                                           | `&application_name=Salesforce`                             |
-| Account ID                           | The account tag                                                                                          | `&account_id=d57c3de47a013c03ca7e237dd3e61d7d`             |
-| Connection ID                        | The ID of the connection for which this block took effect                                                | `&connection_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`      |
-| Request ID                           | The ID of the request for which this block took effect                                                   | `&request_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`         |
+| Field                 | Definition                                                                                                    | Example                                                    |
+| --------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| User email            | Email of the user that made the query.                                                                        | `&user_email=user@example.com`                             |
+| Site URL              | URL of the original HTTP request.                                                                             | `&site_uri=https%3A%2F%2Fmalware.testcategory.com%2F`      |
+| URL category          | [Domain categories](/cloudflare-one/policies/gateway/domain-categories/) of the URL to be redirected.         | `&request_categories=New%20Domains,Newly%20Seen%20Domains` |
+| Original HTTP referer | Original HTTP referer header of the HTTP request.                                                             | `&referer=https%3A%2F%2Fexample.com%2F`                    |
+| Rule ID               | ID of the Gateway policy that matched the request.                                                            | `&rule_id=6d48997c-a1ec-4b16-b42e-d43ab4d071d1`            |
+| Source IP             | Source IP address of the device that matched the policy.                                                      | `&source_ip=203.0.113.5`                                   |
+| Device ID             | UUID of the device that matched the policy.                                                                   | `&device_id=6d48997c-a1ec-4b16-b42e-d43ab4d071d1`          |
+| Application names     | Name of the application the redirected domain corresponds to, if any.                                         | `&application_name=Salesforce`                             |
+| Account ID            | [Cloudflare account ID](/fundamentals/setup/find-account-and-zone-ids/) of the associated Zero Trust account. | `&account_id=d57c3de47a013c03ca7e237dd3e61d7d`             |
+| Connection ID         | ID of the connection for which the redirect took effect.                                                      | `&connection_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`      |
+| Request ID            | ID of the request for which the redirect took effect.                                                         | `&request_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`         |
+| Query ID              | ID of the DNS query for which the redirect took effect.                                                       | `&query_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`           |
 
 </Details>
 
