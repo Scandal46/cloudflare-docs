@@ -1,18 +1,18 @@
 ---
-title: Getting started
-pcx_content_type: get-started
+title: HTTP to R2
+pcx_content_type: concept
 sidebar:
   order: 1
 head:
   - tag: title
-    content: Getting started
+    content: Getting started with HTTP to R2
 ---
 
 import { Render, PackageManagers } from "~/components";
 
-Pipelines let you ingest real-time data streams, such as click events on a website, or logs from a service. You can send data to a Pipeline from a Worker, or via HTTP. Pipelines handle batching requests and scales in response to your workload. Finally, Pipelines deliver the output into R2 as JSON files, automatically handling partitioning and compression for efficient querying.
+Pipelines lets you ingest and load real time data streams such as website clicks or logs into [R2 Object Storage](/r2/).
 
-By following this guide, you will:
+In this guide, we'll show you how to setup a Pipeline which accepts data via HTTP. By following this guide, you will:
 
 1. Create your first Pipeline.
 2. Connect it to your R2 bucket.
@@ -33,7 +33,13 @@ To use Pipelines, you will need:
 
 ## 1. Set up an R2 bucket
 
-Pipelines let you ingest records in real time, and load them into an R2 bucket. Create a bucket by following the [get started guide for R2](/r2/get-started/). Save the bucket name for the next step.
+Pipelines let you ingest records in real time, and load them into an R2 bucket. Create a bucket by following the [get started guide for R2](/r2/get-started/), or by running the command below:
+
+```sh
+npx wrangler r2 bucket create [R2-BUCKET-NAME]
+```
+
+Save the bucket name for the next step.
 
 ## 2. Create a Pipeline
 
