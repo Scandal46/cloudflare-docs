@@ -1,0 +1,20 @@
+---
+title: Workflows is now Generally Available
+description: Workflows is now GA - ship Workflows that you can rely on in production.
+  - workflows
+  - workers
+date: 2025-04-08T13:00:00Z
+---
+
+import { Render, PackageManagers, TypeScriptExample } from "~/components"
+
+[Workflows](/workflows/) is now _Generally Available_ (or "GA"): in short, it's ready for production workloads.
+
+* Increased concurrency
+* A new `waitForEvent` API
+* Improved observability, including new CPU time metrics that allow you to better
+* Support for `vitest` and testing integrations.
+
+Workflows also supports the [increased CPU limits](/changelog/2025-03-25-higher-cpu-limits/) that apply to Workers, allowing you to run more CPU-intensive tasks (up to 5 minutes of CPU time per instance), not including the time spent waiting on network calls, AI models, or other I/O bound tasks.
+
+Read the [GA announcement blog](https://blog.cloudflare.com/workflows-is-now-generally-available/) to learn more.

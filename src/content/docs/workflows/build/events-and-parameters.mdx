@@ -14,10 +14,11 @@ Events are a powerful part of a Workflow, as you often want a Workflow to act on
 
 ## Pass parameters to a Workflow
 
-You can pass parameters to a Workflow in two ways:
+You can pass parameters to a Workflow in three ways:
 
 * As an optional argument to the `create` method on a [Workflow binding](/workers/wrangler/commands/#trigger) when triggering a Workflow from a Worker.
 * Via the `--params` flag when using the `wrangler` CLI to trigger a Workflow.
+* Via the `step.waitForEvent` API, which allows a Workflow instance to wait for an event (and optional data) to be received while it is running.
 
 You can pass any JSON-serializable object as a parameter.
 
@@ -59,6 +60,10 @@ npx wrangler@latest workflows trigger workflows-starter '{"some":"data"}'
 ```sh output
 🚀 Workflow instance "57c7913b-8e1d-4a78-a0dd-dce5a0b7aa30" has been queued successfully
 ```
+
+### Wait for events
+
+TODO - 
 
 ## TypeScript and type parameters
 
