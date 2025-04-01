@@ -67,6 +67,22 @@ A Durable Object fully ceases to exist if, when it shuts down, its storage is em
 
 However if you ever write using [Storage API](/durable-objects/api/storage-api/), including setting alarms, then you must explicitly call [`storage.deleteAll()`](/durable-objects/api/storage-api/#deleteall) to empty storage. It is not sufficient to simply delete the specific data that you wrote, such as deleting a key or dropping a table, as some metadata may remain. The only way to remove all storage is to call `deleteAll()`. Calling `deleteAll()` ensures that a Durable Object will not be billed for storage.
 
+```ts
+export class MyDurableObject extends DurableObject<Env> {
+
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+  }
+
+  async clearDo():Promise<void> {
+    // Clears the Durable Object storage
+    // This will delete all the storage associated with this Durable Object instance
+    // This will also delete the Durable Object instance itself
+    await this.ctx.storage.deleteAll();
+  }
+}
+```
+
 ## SQL API Examples
 
 <Render file="durable-objects-sql" />
