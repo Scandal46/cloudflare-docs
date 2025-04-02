@@ -40,11 +40,11 @@ This method prioritizes phrasing and word overlap—not semantic meaning. For ex
 
 The similarity threshold decides how close two prompts need to be to reuse a cached response. Here’s what you can pick from:
 
-| Threshold        | Description                 | Example Match                                                                  |
-| ---------------- | --------------------------- | ------------------------------------------------------------------------------ |
-| Exact            | Near-identical matches only | "What’s the weather like today" matches with "What is the weather like today?" |
-| Strong (default) | High semantic similarity    | "What’s the weather like today?" matches with "How’s the weather today?"       |
-| Broad            | Moderate match, more hits   | "What’s the weather like today?" matches with "Tell me today’s weather"        |
-| Loose            | Low similarity, max reuse   | "What’s the weather like today?" matches with "Give me the forecast"           |
+| Threshold        | Description                 | Example Match                                                                   |
+| ---------------- | --------------------------- | ------------------------------------------------------------------------------- |
+| Exact            | Near-identical matches only | "What’s the weather like today?" matches with "What is the weather like today?" |
+| Strong (default) | High semantic similarity    | "What’s the weather like today?" matches with "How’s the weather today?"        |
+| Broad            | Moderate match, more hits   | "What’s the weather like today?" matches with "Tell me today’s weather"         |
+| Loose            | Low similarity, max reuse   | "What’s the weather like today?" matches with "Give me the forecast"            |
 
 Test these values to see which works best with your application.
