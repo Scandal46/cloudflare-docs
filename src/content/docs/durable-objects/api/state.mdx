@@ -82,7 +82,7 @@ To help mitigate deadlocks there is a 30 second timeout applied when executing t
 
 :::note
 
-You should only need `blockConcurrencyWhile` if you are making additional, asynchronous calls (such as to another API or service) and cannot tolerate those other requests changing the internal state of the Durable Object when the event loop is yielded.
+You should only need `blockConcurrencyWhile` if you are making additional, asynchronous calls (such as to another API or service), and cannot tolerate other requests processed by the Durable Object changing its internal while the event loop is yielded from the original request.
 
 In practice, this is quite rare, and most use cases do not need `blockConcurrencyWhile`.
 
