@@ -34,8 +34,6 @@ When a new prompt is received:
 3. Fingerprints are grouped into LSH buckets, which allow AutoRAG to quickly find past prompts that are likely to be similar without scanning every cached prompt.
 4. If a prompt in the same bucket meets the configured similarity threshold, its cached response is reused.
 
-This method prioritizes phrasing and word overlap—not semantic meaning. For example, `"What’s the weather today?"` and `"How’s the weather today?"` may match, while `"Is it hot outside?"` may not, even if the intent is similar.
-
 ## Choosing a Threshold
 
 The similarity threshold decides how close two prompts need to be to reuse a cached response. Here’s what you can pick from:
