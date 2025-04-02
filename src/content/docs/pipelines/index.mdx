@@ -15,13 +15,13 @@ import { CardGrid, Description, Feature, LinkTitleCard, Plan, RelatedProduct } f
 
 <Description>
 
-Ingest and load real time data streams to R2, using Cloudflare Pipelines.
+Ingest real time data streams, and load to R2, using Cloudflare Pipelines.
 
 </Description>
 
 <Plan type="paid" />
 
-Pipelines lets you ingest and load real time data streams into [R2 Object Storage](/r2/), without managing any infrastructure. You can send data to a Pipeline data via HTTP, or from a [Worker](/workers/). Your Pipeline will handle batching the data, generating compressed JSON files, and delivering the files to an R2 bucket.
+Cloudflare Pipelines lets you ingest high volumes of real time data, without managing any infrastructure. A single Pipeline can ingest up to 100 MB of data per second. Ingested data is automatically batched, written to output files, and delivered to an R2 bucket in your account.
 
 ## Build your first Pipeline
 You can create a Pipeline with a single command.
@@ -37,22 +37,34 @@ You can now send data to your pipeline with:
   curl "https://0adedf710c20401x74380236286a8b9c.pipelines.cloudflare.com/" -d '[{ "foo":"bar }]'
 ```
 
-Refer to the [getting guide](/pipelines/getting-started/http-to-r2) to start building with Pipelines.
+Refer to the [getting started guide](/pipelines/getting-started) to start building with Pipelines.
 
 ***
 ## Features
 
-<Feature header="Build your first Pipeline" href="/pipelines/get-started/">
-Create your first Pipeline, and send data to it.
+<Feature header="HTTP as a source" href="/pipelines/build-with-pipelines/http/">
+Each Pipeline generates a globally scalable HTTP endpoint, which supports authentication and CORS settings.
 </Feature>
 
-<Feature header="HTTP as a source" href="/pipelines/sources/http/">
-Each Pipeline generates a globally scalable HTTP endpoint, which you can use to ingest data.
+<Feature header="Batch settings" href="/pipelines/build-with-pipelines/batching">
+Leverage batch sizes to generate large, and query-efficient, output files.
 </Feature>
 
-<Feature header="Batch and deliver records to R2" href="/pipelines/configuration/batching">
-Pipelines buffer records, before creating JSON files and delivering them to R2.
-</Feature>
+***
+
+## Related products
+
+<RelatedProduct header="R2" href="/r2/" product="r2">
+
+Cloudflare R2 Object Storage allows developers to store large amounts of unstructured data without the costly egress bandwidth fees associated with typical cloud storage services.
+
+</RelatedProduct>
+
+<RelatedProduct header="Workers" href="/workers/" product="workers">
+
+Cloudflare Workers allows developers to build serverless applications and deploy instantly across the globe for exceptional performance, reliability, and scale.
+
+</RelatedProduct>
 
 ***
 
@@ -60,7 +72,7 @@ Pipelines buffer records, before creating JSON files and delivering them to R2.
 
 <CardGrid>
 
-<LinkTitleCard title="Limits" href="/pipelines/reference/limits/" icon="document">
+<LinkTitleCard title="Limits" href="/pipelines/platform/limits/" icon="document">
 Learn about Pipelines limits.
 </LinkTitleCard>
 
