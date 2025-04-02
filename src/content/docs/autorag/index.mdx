@@ -16,11 +16,17 @@ import {
 	Plan,
 	RelatedProduct,
 	LinkButton,
+	Feature,
 } from "~/components";
 
 <Plan type="all" />
 
 AutoRAG allows developers to create fully-managed retrieval-augmented generation (RAG) pipelines powered by Cloudflare allowing developers to integrate context-aware AI into their applications without managing infrastructure.
+
+You can use AutoRAG to build:
+
+- **Chatbots:** Improve chatbot accuracy by providing relevant up-to-date information.
+- **Enterprise Knowledge Search:** Enhance knowledge bases and wikis with intelligent search.
 
 <div>
 	<LinkButton href="/autorag/get-started">Get started</LinkButton>
@@ -32,6 +38,24 @@ AutoRAG allows developers to create fully-managed retrieval-augmented generation
 ---
 
 ## Features
+
+<Feature header="Automated indexing" href="/autorag/configuration/indexing" cta="View indexing">
+
+Automatically and continuously index your data source, keeping your content fresh without manual reprocessing.
+
+</Feature>
+
+<Feature header="Binding" href="/autorag/use-autorag/workers-binding/" cta="Add to Worker">
+
+Call your AutoRAG instance for search or AI search directly from a Cloudflare Worker using the native binding integration.
+
+</Feature>
+
+<Feature header="Similarity caching" href="/autorag/configuration/cache" cta="Use caching">
+
+Cache repeated queries and results to improve latency and reduce compute on repeated requests.
+
+</Feature>
 
 ---
 
