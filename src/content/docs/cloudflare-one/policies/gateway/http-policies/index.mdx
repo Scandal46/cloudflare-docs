@@ -95,7 +95,7 @@ The Redirect action allows you to redirect matched HTTP requests to a different 
 
 In **Policy URL redirect**, you can define what URL to redirect matched requests to.
 
-When you turn on **Send policy context**, Gateway will append the details of the matching HTTP request to the redirected URL as a query string. Not every context field will be included. Potential policy context fields include:
+When you turn on **Send policy context**, Gateway will append details of the matching HTTP request to the redirected URL as a query string. Not every context field will be included. Potential policy context fields include:
 
 <Details header="Policy context fields">
 
@@ -110,8 +110,8 @@ When you turn on **Send policy context**, Gateway will append the details of the
 | Device ID             | UUID of the device that matched the policy.                                                                   | `&device_id=6d48997c-a1ec-4b16-b42e-d43ab4d071d1`          |
 | Application names     | Name of the application the redirected domain corresponds to, if any.                                         | `&application_name=Salesforce`                             |
 | Account ID            | [Cloudflare account ID](/fundamentals/setup/find-account-and-zone-ids/) of the associated Zero Trust account. | `&account_id=d57c3de47a013c03ca7e237dd3e61d7d`             |
-| Connection ID         | ID of the connection for which the redirect took effect.                                                      | `&connection_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`      |
-| Request ID            | ID of the request for which the redirect took effect.                                                         | `&request_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`         |
+| Connection ID         | ID of the proxy connection for which the redirect took effect.                                                | `&connection_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`      |
+| Request ID            | ID of the HTTP request for which the redirect took effect.                                                    | `&request_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`         |
 | Query ID              | ID of the DNS query for which the redirect took effect.                                                       | `&query_id=ddcd6361-d5e5-4fdd-9bb3-c3a2de286860`           |
 
 </Details>
