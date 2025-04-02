@@ -183,7 +183,7 @@ At a minimum, the `name`, `main` and `compatibility_date` keys are required to d
   - Configures static assets that will be served. Refer to [Assets](/workers/static-assets/binding/) for more details.
 
 * `migrations` <Type text="object"/> <MetaInfo text="optional"/>
-  - Maps a Durable Object from a class name to a runtime state. This communicates the changes to the Workers runtime and provides the runtime with instructions on how to deal with those changes. Refer to [Durable Objects migrations](/durable-objects/reference/durable-objects-migrations/#durable-object-migrations-in-wranglertoml).
+  - Maps a Durable Object from a class name to a runtime state. This communicates changes to the Durable Object (creation / deletion / rename / transfer) to the Workers runtime and provides the runtime with instructions on how to deal with those changes. Refer to [Durable Objects migrations](/durable-objects/reference/durable-objects-migrations/#durable-object-migrations-in-wranglertoml).
 
 ## Non-inheritable keys
 
