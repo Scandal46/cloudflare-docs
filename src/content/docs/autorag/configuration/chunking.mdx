@@ -1,0 +1,51 @@
+---
+pcx_content_type: concept
+title: Chunking
+sidebar:
+  order: 6
+---
+
+Chunking is the process of splitting large data into smaller segments before embedding them for search. AutoRAG performs **fixed size chunking** during indexing to make your content retrievable at the right level of granularity.
+
+## Chunking controls
+
+AutoRAG exposes two parameters to help you control chunking behavior:
+
+- **Chunk size**: The number of tokens per chunk.
+  - Minimum: `64`
+  - Maximum: `512`
+- **Chunk overlap**: The percentage of overlapping tokens between adjacent chunks.
+  - Minimum: `0%`
+  - Maximum: `30%`
+
+These settings apply during the indexing step, before your data are embedded and stored in Vectorize.
+
+## Example
+
+Let’s say your document is tokenized as: `[The, quick, brown, fox, jumps, over, the, lazy, dog, ...]`
+
+With **chunk size = 5** and **chunk_overlap = 40%** (i.e 2 tokens), your chunks will look like:
+
+- Chunk 1: `[The, quick, brown, fox, jumps]`
+- Chunk 2: `[fox, jumps, over, the, lazy]`
+- Chunk 3: `[the, lazy, dog, ...]`
+
+## Choosing chunk size and overlap
+
+Chunking affects both how your content is retrieved and how much context is passed into the generation model.
+
+For chunk size, consider how:
+
+- **Smaller chunks** create more percise vector matches, but may split relevant ideas across multiple chunks.
+- **Larger chunks** retain more context, but may dilute relevance and reduce retrieval precision.
+
+For chunk overlap, consider how:
+
+- **More overlap** helps preserve continuity across boundaries, especially in flowing or narrative content.
+- **Less overlap** reduces indexing time and cost, but can miss context if key terms are split between chunks.
+
+### Additional considerations:
+
+- **Vector index size:** Smaller chunk sizes produce more chunks and more total vectors. Refer to the [Vectorize limits](/vectorize/platform/limits/) to ensure your configuration stays within the maximum allowed vectors per index.
+- **Generation model context window:** Generation models have a limited context window that must fit all retrieved chunks (`topK` × `chunk size`), the user query, and the model’s output. Be careful with large chunks or high topK values to avoid context overflows.
+- **Cost and performance:** Larger chunks and higher topK settings result in more tokens passed to the model, which can increase latency and cost. You can monitor this usage in [AI Gateway](/ai-gateway/).
