@@ -13,7 +13,12 @@ AutoRAG will automatically scan and process supported files stored in that bucke
 
 ## File Limit
 
-AutoRAG supports files that are **10 MB or smaller**. Larger files will not be indexed and will be reported in the error logs.
+AutoRAG has different file size limits depending on the file type:
+
+- Up to **4 MB** for files that are already in plain text or Markdown.
+- Up to **1 MB** for files that need to be converted into Markdown (like PDFs or other rich formats).
+
+Files that exceed these limits won’t be indexed and will show up in the error logs.
 
 ## File Type
 
