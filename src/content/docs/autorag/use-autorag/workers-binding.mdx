@@ -42,13 +42,19 @@ const answer = await env.AI.AutoRAG("my-autorag").aiSearch({
 	ranking_options: {
 		score_threshold: 0.7,
 	},
-	stream: true,
+	stream: false,
 });
 ```
 
 ### Parameters
 
 <Render file="ai-search-api-params" product="autorag" />
+
+### Response
+
+This is the response structure without `stream` enabled.
+
+<Render file="ai-search-response" product="autorag" />
 
 ## `search()`
 
@@ -68,6 +74,10 @@ const answer = await env.AI.AutoRAG("my-autorag").search({
 ### Parameters
 
 <Render file="search-api-params" product="autorag" />
+
+### Response
+
+<Render file="search-response" product="autorag" />
 
 ## Local development
 
