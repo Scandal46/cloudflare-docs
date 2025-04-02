@@ -28,3 +28,15 @@ Hyperdrive supports the following [authentication modes](https://www.postgresql.
 - Password Authentication (`md5`)
 - Password Authentication (`password`) (clear-text password)
 - SASL Authentication (`SCRAM-SHA-256`)
+
+## Unsupported PostgreSQL features:
+
+Hyperdrive does not support the following PostgreSQL features:
+
+- SQL-level management of prepared statements, such as using `PREPARE`, `DISCARD`, `DEALLOCATE`, or `EXECUTE`.
+- Advisory locks ([PostgreSQL documentation](https://www.postgresql.org/docs/current/explicit-locking.html#ADVISORY-LOCKS)).
+- `LISTEN` and `NOTIFY`.
+- `PREPARE` and `DEALLOCATE`.
+- Any modification to per-session state not explicitly documented as supported elsewhere.
+
+In cases where you need to issue these unsupported statements from your application, the Hyperdrive team recommends setting up a second, direct client without Hyperdrive.
