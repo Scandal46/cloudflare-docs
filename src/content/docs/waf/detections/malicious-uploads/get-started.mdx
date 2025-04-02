@@ -129,27 +129,15 @@ To check uploaded content in a way that is not covered by the default configurat
 
 Use a `POST` request similar to the following:
 
-TODO Fix example.
-
 <APIRequest
 	path="/zones/{zone_id}/content-upload-scan/payloads"
 	method="POST"
-	json={{
-		payload: 'lookup_json_string(http.request.body.raw, "file")',
-	}}
+	json={[
+		{
+			payload: 'lookup_json_string(http.request.body.raw, "file")',
+		},
+	]}
 />
-
-```bash
-curl "https://api.cloudflare.com/client/v4/zones/{zone_id}/content-upload-scan/payloads" \
---header "X-Auth-Email: <EMAIL>" \
---header "X-Auth-Key: <API_KEY>" \
---header "Content-Type: application/json" \
---data '[
-  {
-    "payload": "lookup_json_string(http.request.body.raw, \"file\")"
-  }
-]'
-```
 
 The above request will add the following expression to the current list of custom scan expressions:
 
