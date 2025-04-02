@@ -11,63 +11,81 @@ import {
 	InlineBadge,
 	Render,
 	PackageManagers,
+	Steps,
+	Details,
 } from "~/components";
 
-**Start from CLI** - scaffold a Hono project with Assets.
-
-<PackageManagers
-	type="create"
-	pkg="cloudflare@latest"
-	args="my-hono-app -- --framework=hono --platform=workers"
-/>
-
-## What is Hono?
-
-Lightweight backend, great with Cloudflare Workers.
-
-With Workers Assets, you can easily combine a Hono backend with a SPA to create a full-stack app.
-
-## Adding a React SPA to a Hono project
-
-- run c3 if you don't have an existing hono app.
-- add index.html
-- set spa mode?
-- does the vite plugin just work with hono?
-
-## 1. Set up a new project
-
-Use the [`create-cloudflare`](https://www.npmjs.com/package/create-cloudflare) CLI (C3) to set up a new project. C3 will create a new project directory, use code from the official Hono template, and provide the option to deploy instantly.
-
-To use `create-cloudflare` to create a new Hono project with <InlineBadge preset="beta" /> Workers Assets, run the following command:
+**Start from CLI** - scaffold a full-stack app with a Hono API, React SPA and the Cloudflare Vite plugin for lightning-fast development.
 
 <PackageManagers
 	type="create"
 	pkg="cloudflare@latest my-hono-app"
-	args={"--framework=hono --platform=workers"}
+	args="--template=cloudflare/templates/vite-react-template"
 />
+---
 
-<Render
-	file="c3-post-run-steps"
-	product="workers"
-	params={{
-		category: "web-framework",
-		framework: "Hono",
-	}}
-/>
+**Or just deploy** - create a full-stack app with Hono, React and
+Vite, with CI/CD and previews all set up for you.
 
-After setting up your project, change your directory by running the following command:
+[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://dash.cloudflare.com/?to=/:account/workers-and-pages/create/deploy-to-workers&repository=https://github.com/cloudflare/templates/tree/staging/vite-react-template)
 
-```sh
-cd my-hono-app
-```
+## What is Hono?
 
-## 2. Develop locally
+[Hono](https://hono.dev/) is an ultra-fast, lightweight framework for building web applications, and works fantastically with Cloudflare Workers.
+With Workers Assets, you can easily combine a Hono API running on Workers with a SPA to create a full-stack app.
 
-After you have created your project, run the following command in the project directory to start a local server. This will allow you to preview your project locally during development.
+## Creating a full-stack Hono app with a React SPA
 
-<PackageManagers type="run" args={"dev"} />
+<Steps>
+1. **Create a new project with the create-cloudflare CLI (C3)**
 
-## 3. Deploy your project
+    	<PackageManagers
+    	type="create"
+    	pkg="cloudflare@latest my-hono-app"
+    	args="--template=cloudflare/templates/vite-react-template"
+    	/>
+    	<Details header="What's happening behind the scenes?">
+    		Hi
+    	</Details>
+
+2.  **Develop locally with the Cloudflare Vite plugin**
+
+        After creating your project, run the following command in your project directory to start a local development server.
+        <PackageManagers type="run" args="dev" />
+        <Details header="What's happening behind the scenes?">
+        	Hi
+        </Details>
+
+3.  **Deploy your project**
+
+        	Your project can be deployed to a `*.workers.dev` subdomain or a [Custom Domain](/workers/configuration/routing/custom-domains/), from your own machine or from any CI/CD system, including [Cloudflare's own](/workers/ci-cd/builds/).
+
+        	The following command will build and deploy your project. If you are using CI, ensure you update your ["deploy command"](/workers/ci-cd/builds/configuration/#build-settings) configuration appropriately.
+
+        	<PackageManagers type="run" args={"deploy"} />
+
+</Steps>
+
+## Adding a SPA to an existing Hono project
+
+While you could use whatever framework you like, this guide will use [React](https://reactjs.org/) with the Cloudflare Vite plugin as an example.
+
+<Steps>
+1. Install React , vite (dev), plugin-react-swc,
+	@cloudflare/vite-plugin-cloudflare
+
+2. sett up vite config with react plugin +
+   cloudflare
+
+3. set up wrangler config so that assets point to the right
+   directory
+
+4. create index.html and main.tsx
+
+5. add something in main.tsx that
+   calls a hono endpoint
+
+</Steps>
 
 Your project can be deployed to a `*.workers.dev` subdomain or a [Custom Domain](/workers/configuration/routing/custom-domains/), from your own machine or from any CI/CD system, including [Cloudflare's own](/workers/ci-cd/builds/).
 
@@ -75,14 +93,12 @@ The following command will build and deploy your project. If you are using CI, e
 
 <PackageManagers type="run" args={"deploy"} />
 
+## Adding a Hono backend to an existing SPA
+
+If you've got a static app that you r
+
 ---
 
 ## Bindings
 
 Your Hono application can be fully integrated with the Cloudflare Developer Platform, in both local development and in production, by using product bindings. The [Hono documentation](https://hono.dev/docs/getting-started/cloudflare-workers#bindings) provides information about configuring bindings and how you can access them.
-
-## Static assets
-
-You can serve static assets in your Hono application by [placing them in the `./public/` directory](https://hono.dev/docs/getting-started/cloudflare-workers#serve-static-files). This can be useful for resource files such as images, stylesheets, fonts, and manifests.
-
-<Render file="workers-assets-routing-summary" />
